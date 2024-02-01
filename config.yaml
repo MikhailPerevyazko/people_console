@@ -1,0 +1,7 @@
+information:
+- id: '3'
+  name: Леша
+  surname: Перевязко
+  middle_name: Сергеевич
+  date_of_birth: 28.06.2001
+  gender: Мужчина
