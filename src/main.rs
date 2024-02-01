@@ -122,7 +122,7 @@ pub fn make_info_of_new_person() {
 
     println!("Вы ввели следующие данные: {:#?}", new_data_person);
 
-    //Перезаписываем yaml-файл.
+    //Перезаписываем yaml-файл(удаляем старые записи).
     let serialized = serde_yaml::to_string(&new_data_person_vector).unwrap();
     std::fs::write("config.yaml", serialized).unwrap();
 }
