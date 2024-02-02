@@ -1,28 +1,75 @@
-use std::{error::Error, path::PathBuf};
+use std::{collections::HashMap, error::Error};
+
+use chrono::{DateTime, Local};
+use serde::{Deserialize, Serialize};
 
 use crate::storage::{Person, PersonStorage};
-
-pub struct YamlPerson {}
-pub struct YamlPersons {
-    persons: Vec<YamlPerson>,
+#[derive(Serialize, Deserialize, Clone)]
+pub struct SerdePerson {
+    id: i32,
+    name: String,
+    surname: String,
+    middle_name: String,
+    date_of_birth: String,
+    gender: bool,
 }
 
-impl Into<Person> for YamlPerson {
-    fn into(self) -> Person {
-        todo!()
+impl SerdePerson {
+    pub fn new(
+        id: i32,
+        name: String,
+        surname: String,
+        middle_name: String,
+        date_of_birth: String,
+        gender: bool,
+    ) -> Self {
+        Self {
+            id,
+            name,
+            surname,
+            middle_name,
+            date_of_birth,
+            gender,
+        }
     }
 }
-impl Into<PersonStorage> for YamlPersons {
+#[derive(Serialize, Deserialize, Clone)]
+pub struct SerdePersons {
+    persons: Vec<SerdePerson>,
+}
+
+impl SerdePersons {
+    pub fn new(persons: Vec<SerdePerson>) -> Self {
+        Self { persons }
+    }
+}
+impl TryInto<Person> for SerdePerson {
+    type Error = Box<dyn Error>;
+    fn try_into(self) -> Result<Person, Self::Error> {
+        let person = Person::new(
+            self.name.to_owned(),
+            self.surname.to_owned(),
+            self.middle_name.to_owned(),
+            self.date_of_birth.to_owned().parse::<DateTime<Local>>()?,
+            self.gender.to_owned(),
+        );
+        Ok(person)
+    }
+}
+
+impl Into<PersonStorage> for SerdePersons {
     fn into(self) -> PersonStorage {
-        todo!()
+        let result: HashMap<i32, Person> =
+            self.persons.iter().fold(HashMap::new(), |mut res, item| {
+                if let Ok(person) = item.to_owned().try_into() {
+                    let _ = res.insert(item.id, person);
+                }
+                res
+            });
+        PersonStorage::new(result)
     }
 }
-
-impl YamlPersons {
-    fn load(file_name: &PathBuf) -> Result<Self, Box<dyn Error>> {
-        todo!()
-    }
-    fn save(&self, file_name: &PathBuf) -> Result<(), Box<dyn Error>> {
-        todo!()
-    }
+pub trait BDOperation {
+    fn load(&self) -> Result<SerdePersons, Box<dyn Error>>;
+    fn save(&self, persons: &SerdePersons) -> Result<(), Box<dyn Error>>;
 }
