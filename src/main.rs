@@ -1,3 +1,6 @@
+mod bd_manager;
+mod cmd_manager;
+mod storage;
 use serde::{Deserialize, Serialize};
 use serde_yaml::{self};
 use std::io::{self};
@@ -10,6 +13,14 @@ pub struct InformationItem {
     middle_name: String,
     date_of_birth: String,
     gender: String,
+}
+impl InformationItem {
+    pub fn id(&self) -> &str {
+        &self.id
+    }
+    pub fn id_mut(&mut self) -> &mut String {
+        &mut self.id
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
