@@ -126,9 +126,10 @@ pub fn make_info_of_new_person() {
     println!("\n");
     println!("Вы ввели следующие данные: {:#?}", new_data_person);
 
+    // Добавляем созданные данные в переменную с существующими данными.
     scrape_config.information.push(new_person_item);
 
-    // //Перезаписываем yaml-файл(удаляем старые записи).
+    // Перезаписываем yaml-файл с обновленными данными.
     let serialized = serde_yaml::to_string(&scrape_config).unwrap();
     std::fs::write("config.yaml", serialized).unwrap();
 
