@@ -16,30 +16,32 @@ pub struct InformationItem {
 pub struct Information {
     information: Vec<InformationItem>,
 }
+
 fn main() {
     show_info();
 }
 
 pub fn show_info() {
     // Открываем файл с информацией.
-    let open_file = std::fs::File::open("config.yaml").expect("Not open file.");
+    let open_file = std::fs::File::open("config.yaml").expect("Не удается открыть файл.");
     // Десериализуем содержимое файла, записываем в перменную.
     let scrape_config: Information =
-        serde_yaml::from_reader(open_file).expect("Can't read values.");
+        serde_yaml::from_reader(open_file).expect("Не получается прочитать значения.");
 
     for item in scrape_config.information {
         println!(
             "ID: {}\nName: {}\nSurname: {}\nMiddle name: {}\nDate of birth: {}\nGender: {}",
             item.id, item.name, item.surname, item.middle_name, item.date_of_birth, item.gender
         );
+        println!("\n");
     }
 
     // Записываем данные нового пользователя.
-    println!("Вы хотите добавить нового пользователя?");
+    println!("Вы хотите добавить нового пользователя? да / нет :");
     let mut answer = String::new();
     io::stdin().read_line(&mut answer).expect("Ошибка ввода");
     answer = answer.trim().to_lowercase();
-    if answer != "yes" {
+    if answer != "да" {
         println!("До свидания!");
     } else {
         make_info_of_new_person();
@@ -51,6 +53,7 @@ pub fn make_info_of_new_person() {
     let mut new_data_person: Vec<String> = Vec::new();
 
     //Заполняем вектор новыми данными по очереди.
+    println!("\n");
     println!("Введите новый id: ");
     let mut input_id = String::new();
     io::stdin()
@@ -105,8 +108,14 @@ pub fn make_info_of_new_person() {
         new_data_person.push(line.to_string());
     }
 
+    // Открываем файл с информацией.
+    let open_file = std::fs::File::open("config.yaml").expect("Не удается открыть файл.");
+    // Десериализуем содержимое файла, записываем в перменную.
+    let mut scrape_config: Information =
+        serde_yaml::from_reader(open_file).expect("Не получается прочитать значения.");
+
     // Заполянем структуру InformationItem элментами из составленного вектора.
-    let new_person = InformationItem {
+    let new_person_item = InformationItem {
         id: new_data_person[0].to_string(),
         name: new_data_person[1].to_string(),
         surname: new_data_person[2].to_string(),
@@ -114,15 +123,22 @@ pub fn make_info_of_new_person() {
         date_of_birth: new_data_person[4].to_string(),
         gender: new_data_person[5].to_string(),
     };
-
-    // Заполняем структуур Information.
-    let new_data_person_vector = Information {
-        information: vec![new_person],
-    };
-
+    println!("\n");
     println!("Вы ввели следующие данные: {:#?}", new_data_person);
 
-    //Перезаписываем yaml-файл(удаляем старые записи).
-    let serialized = serde_yaml::to_string(&new_data_person_vector).unwrap();
+    scrape_config.information.push(new_person_item);
+
+    // //Перезаписываем yaml-файл(удаляем старые записи).
+    let serialized = serde_yaml::to_string(&scrape_config).unwrap();
     std::fs::write("config.yaml", serialized).unwrap();
+
+    println!("\n");
+    println!("Данные обновлены!");
+    for item in scrape_config.information {
+        println!(
+            "ID: {}\nName: {}\nSurname: {}\nMiddle name: {}\nDate of birth: {}\nGender: {}",
+            item.id, item.name, item.surname, item.middle_name, item.date_of_birth, item.gender
+        );
+        println!("\n");
+    }
 }
