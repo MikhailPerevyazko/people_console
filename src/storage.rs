@@ -1,9 +1,11 @@
 use std::collections::HashMap;
+use std::io::{self};
+use std::result;
 
 use chrono::{DateTime, Local};
 
 use crate::bd_manager::{SerdePerson, SerdePersons};
-
+#[derive(Clone)]
 pub struct Person {
     name: String,
     surname: String,
@@ -11,6 +13,7 @@ pub struct Person {
     date_of_birth: DateTime<Local>,
     gender: bool,
 }
+#[derive(Clone)]
 pub struct PersonStorage {
     persons: HashMap<i32, Person>,
 }
@@ -65,16 +68,62 @@ impl Into<SerdePersons> for PersonStorage {
 }
 
 impl PersonStorage {
-    fn add(&mut self) {
-        todo!()
+    fn add(&mut self, id: i32, person: Person) {
+        let _ = self.persons.insert(id, person);
     }
-    fn get(&self) -> &[Person] {
-        todo!()
+
+    fn get(&self, id: Option<Vec<i32>>) -> Option<Vec<(i32, Person)>> {
+        match id {
+            Some(ids) => {
+                let mut result = ids.iter().fold(Vec::new(), |mut res, id| {
+                    if let Some(person) = self.persons.get(id) {
+                        res.push((id.to_owned(), person.to_owned()));
+                    }
+                    res
+                });
+                if result.is_empty() {
+                    None
+                } else {
+                    Some(result)
+                }
+            }
+            None => {
+                let result: Vec<(i32, Person)> = self.to_owned().into();
+                if result.is_empty() {
+                    None
+                } else {
+                    Some(result)
+                }
+            }
+        }
     }
-    fn delete(&mut self) {
-        todo!()
+
+    fn delete(&mut self, predicate: &dyn Fn(&i32, &mut Person) -> bool) {
+        self.persons.retain(predicate);
     }
-    fn find(&self) -> &[Person] {
-        todo!()
+
+    fn find(&self, predicant: &dyn Fn(&(&i32, &Person)) -> bool) -> Option<Vec<(i32, Person)>> {
+        let result = self
+            .persons
+            .iter()
+            .filter(predicant)
+            .map(|(id, person)| (id.to_owned(), person.to_owned()))
+            .collect::<Vec<(i32, Person)>>();
+        if result.is_empty() {
+            None
+        } else {
+            Some(result)
+        }
+    }
+}
+
+impl Into<Vec<(i32, Person)>> for PersonStorage {
+    fn into(self) -> Vec<(i32, Person)> {
+        let result = self
+            .persons
+            .iter()
+            .map(|(id, persons)| (id.to_owned(), persons.to_owned()))
+            .collect::<Vec<(i32, Person)>>();
+        result
     }
 }

@@ -1,6 +1,7 @@
 mod bd_manager;
 mod cmd_manager;
 mod storage;
+mod ui;
 mod yaml_bd;
 use serde::{Deserialize, Serialize};
 use serde_yaml::{self};
