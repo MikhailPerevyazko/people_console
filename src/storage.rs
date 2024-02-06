@@ -70,7 +70,7 @@ impl PersonStorage {
         let _ = self.persons.insert(id, person);
     }
 
-    fn get(&self, id: Option<Vec<i32>>) -> Option<Vec<(i32, Person)>> {
+    pub fn get(&self, id: Option<Vec<i32>>) -> Option<Vec<(i32, Person)>> {
         match id {
             Some(ids) => {
                 let mut result = ids.iter().fold(Vec::new(), |mut res, id| {
@@ -96,11 +96,11 @@ impl PersonStorage {
         }
     }
 
-    fn delete(&mut self, predicate: &dyn Fn(&i32, &mut Person) -> bool) {
+    pub fn delete(&mut self, predicate: &dyn Fn(&i32, &mut Person) -> bool) {
         self.persons.retain(predicate);
     }
 
-    fn find(&self, predicant: &dyn Fn(&(&i32, &Person)) -> bool) -> Option<Vec<(i32, Person)>> {
+    pub fn find(&self, predicant: &dyn Fn(&(&i32, &Person)) -> bool) -> Option<Vec<(i32, Person)>> {
         let result = self
             .persons
             .iter()
