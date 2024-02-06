@@ -1,6 +1,4 @@
 use std::collections::HashMap;
-use std::io::{self};
-use std::result;
 
 use chrono::{DateTime, Local};
 
@@ -68,7 +66,7 @@ impl Into<SerdePersons> for PersonStorage {
 }
 
 impl PersonStorage {
-    fn add(&mut self, id: i32, person: Person) {
+    pub fn add(&mut self, id: i32, person: Person) {
         let _ = self.persons.insert(id, person);
     }
 
