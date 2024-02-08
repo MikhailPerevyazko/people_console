@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use chrono::{DateTime, Local, NaiveDate};
+use chrono::NaiveDate;
 
 use crate::bd_manager::{SerdePerson, SerdePersons};
 #[derive(Clone)]

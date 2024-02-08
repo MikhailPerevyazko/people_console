@@ -1,25 +1,22 @@
-use chrono::{DateTime, Local, NaiveDate, NaiveDateTime, TimeZone, Utc};
-use serde_yaml::to_string;
-
-use crate::storage::{self, Person, PersonStorage};
+use crate::storage::{Person, PersonStorage};
 use crate::ui::UI;
+use chrono::NaiveDate;
 
-use std::io::stdin;
 use std::{io, vec};
 
 pub struct TUI {}
 
 impl UI for TUI {
     fn add_info(&self, data: &crate::storage::PersonStorage) -> String {
-        println!("Ввести новый id?");
-
-        let mut new_id: Vec<i32> = vec![];
-
+        println!("Введите новый id?");
+        //let mut new_id: Vec<i32> = vec![];
         let mut id: String = String::new();
         io::stdin().read_line(&mut id).expect("Can't read new id.");
-        for i in id.lines() {
-            new_id.push(i.parse::<i32>().unwrap_or_default());
-        }
+        let new_id = id.parse::<i32>().unwrap_or_default();
+
+        // for i in id.lines() {
+        //     new_id.push(i.parse::<i32>().unwrap_or_default());
+        // }
 
         let mut new_person: Vec<_> = Vec::new();
 
@@ -62,10 +59,6 @@ impl UI for TUI {
         let new_date_str: &str = &string_date.as_str();
 
         let parsed_date = NaiveDate::parse_from_str(&new_date_str, "%Y-%m-%d").unwrap();
-        // match parsed_date {
-        //     Ok(parsed_date) => println!("Parsed date: {:?}", parsed_date),
-        //     Err(e) => println!("Error: {:?}", e),
-        //}
 
         let mut new_gender_string: String = String::new();
         println!("Введите gender М/Ж ?:");
@@ -73,12 +66,11 @@ impl UI for TUI {
             .read_line(&mut new_gender_string)
             .expect("Can't read gender");
 
-        let mut new_gender: bool;
-
+        let new_gender;
         if new_gender_string == "М" {
-            new_gender = true
+            new_gender: bool = true;
         } else if new_date_str == "Ж" {
-            new_gender = false
+            new_gender: bool = false;
         }
 
         let person = Person {
