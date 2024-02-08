@@ -1,6 +1,6 @@
 use std::{collections::HashMap, error::Error};
 
-use chrono::{DateTime, Local};
+use chrono::{DateTime, Local, NaiveDate};
 use serde::{Deserialize, Serialize};
 
 use crate::storage::{Person, PersonStorage};
@@ -50,7 +50,7 @@ impl TryInto<Person> for SerdePerson {
             self.name.to_owned(),
             self.surname.to_owned(),
             self.middle_name.to_owned(),
-            self.date_of_birth.to_owned().parse::<DateTime<Local>>()?,
+            self.date_of_birth.to_owned().parse::<NaiveDate>()?,
             self.gender.to_owned(),
         );
         Ok(person)

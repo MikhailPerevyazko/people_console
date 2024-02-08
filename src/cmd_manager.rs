@@ -1,4 +1,5 @@
-use chrono::{DateTime, Local, NaiveDate, NaiveDateTime, TimeZone};
+use chrono::{DateTime, Local, NaiveDate, NaiveDateTime, TimeZone, Utc};
+use serde_yaml::to_string;
 
 use crate::storage::{self, Person, PersonStorage};
 use crate::ui::UI;
@@ -50,26 +51,43 @@ impl UI for TUI {
             new_person.push(line.to_string());
         }
 
-        println!("Введите новый date of birth: ");
-        let mut new_date_of_birth: String = String::new();
+        println!("Введите новый date of birth в формате 'yyyy-mm-dd': ");
+        let mut string_date: String = String::new();
         io::stdin()
-            .read_line(&mut new_date_of_birth)
-            .expect("Can't read new date of birth.");
+            .read_line(&mut string_date)
+            .expect("Wrong date.");
 
-        let from: NaiveDateTime = new_date_of_birth.parse().unwrap();
-        let date_time: DateTime<Local> = Local.from_local_datetime(&from).unwrap();
+        let new_date = &string_date.len();
+        string_date.truncate(new_date - 1);
+        let new_date_str: &str = &string_date.as_str();
 
-        for line in date_time {
-            new_person.push(line);
+        let parsed_date = NaiveDate::parse_from_str(&new_date_str, "%Y-%m-%d").unwrap();
+        // match parsed_date {
+        //     Ok(parsed_date) => println!("Parsed date: {:?}", parsed_date),
+        //     Err(e) => println!("Error: {:?}", e),
+        //}
+
+        let mut new_gender_string: String = String::new();
+        println!("Введите gender М/Ж ?:");
+        io::stdin()
+            .read_line(&mut new_gender_string)
+            .expect("Can't read gender");
+
+        let mut new_gender: bool;
+
+        if new_gender_string == "М" {
+            new_gender = true
+        } else if new_date_str == "Ж" {
+            new_gender = false
         }
 
-        // let person = Person {
-        //     name: new_person[0],
-        //     surname: new_person[1],
-        //     middle_name: new_person[3],
-        //     date_of_birth: new_person[4],
-        //     gender: false,
-        // };
+        let person = Person {
+            name: new_person[0].to_string(),
+            surname: new_person[1].to_string(),
+            middle_name: new_person[2].to_string(),
+            date_of_birth: parsed_date,
+            gender: new_gender,
+        };
 
         data.add(new_id, person);
         return "good".to_string();

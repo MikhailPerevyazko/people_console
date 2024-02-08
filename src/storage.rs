@@ -1,15 +1,15 @@
 use std::collections::HashMap;
 
-use chrono::{DateTime, Local};
+use chrono::{DateTime, Local, NaiveDate};
 
 use crate::bd_manager::{SerdePerson, SerdePersons};
 #[derive(Clone)]
 pub struct Person {
-    name: String,
-    surname: String,
-    middle_name: String,
-    date_of_birth: DateTime<Local>,
-    gender: bool,
+    pub name: String,
+    pub surname: String,
+    pub middle_name: String,
+    pub date_of_birth: NaiveDate,
+    pub gender: bool,
 }
 #[derive(Clone)]
 pub struct PersonStorage {
@@ -21,7 +21,7 @@ impl Person {
         name: String,
         surname: String,
         middle_name: String,
-        date_of_birth: DateTime<Local>,
+        date_of_birth: NaiveDate,
         gender: bool,
     ) -> Self {
         Self {
