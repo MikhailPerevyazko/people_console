@@ -11,3 +11,4 @@ clap = { version = "4.4.11", features = ["derive"] }
 serde_yaml = "0.9.28"
 serde_json = "1.0.113"
 chrono = "0.4.33"
+rand = "0.3"
