@@ -73,7 +73,7 @@ impl PersonStorage {
     pub fn get(&self, id: Option<Vec<i32>>) -> Option<Vec<(i32, Person)>> {
         match id {
             Some(ids) => {
-                let mut result = ids.iter().fold(Vec::new(), |mut res, id| {
+                let result = ids.iter().fold(Vec::new(), |mut res, id| {
                     if let Some(person) = self.persons.get(id) {
                         res.push((id.to_owned(), person.to_owned()));
                     }

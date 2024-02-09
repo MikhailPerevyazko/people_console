@@ -2,8 +2,7 @@ use crate::storage::{Person, PersonStorage};
 use crate::ui::UI;
 use chrono::NaiveDate;
 
-use rand::distributions;
-use rand::{thread_rng, Rng};
+use rand::Rng;
 use std::{io, vec};
 
 pub struct TUI {}
@@ -13,7 +12,7 @@ impl UI for TUI {
         //Пользователь получает сгенерированный id.
         let random_num: i32 = rand::thread_rng().gen_range(1, 10000);
         let new_id = random_num;
-        
+
         //Создаем вектор, в который будут записываться новые данные.
         //Пользователь вводит новый name и записывает в вектор.
         let mut new_person: Vec<_> = Vec::new();
@@ -88,7 +87,7 @@ impl UI for TUI {
             gender: new_gender,
         };
 
-        data:PersonStorage.add(new_id, new_person);
+        data.add(new_id, new_person);
         return "good".to_string();
     }
 
