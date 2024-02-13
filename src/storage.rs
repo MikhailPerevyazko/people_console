@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use chrono::NaiveDate;
 
 use crate::bd_manager::{SerdePerson, SerdePersons};
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Person {
     pub name: String,
     pub surname: String,

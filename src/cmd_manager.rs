@@ -148,10 +148,10 @@ impl UI for TUI {
                 });
             }
         }
-        todo!()
+        return "good".to_string();
     }
 
-    fn find_param(&self, _data: &PersonStorage) -> String {
+    fn find_param(&self, data: &PersonStorage) -> String {
         //Опрашиваем пользователя какое поле следуент найти.
         let mut find_param: String = String::new();
         println!("Введите называние поля, которое вы хотите удалить: ");
@@ -161,22 +161,54 @@ impl UI for TUI {
 
         let param = PersonParam::from_str(&find_param).unwrap();
 
+        let mut print_data: Vec<_> = Vec::new();
         match param {
             PersonParam::Name => {
-                todo!()
+                let find_data =
+                    data.find(&|item: &(&i32, &Person)| -> bool { item.1.name.contains("") });
+
+                if let Some(line) = find_data {
+                    print_data.push(line);
+                }
+                println!("{:?}", print_data);
             }
             PersonParam::Surname => {
-                todo!()
+                let find_data =
+                    data.find(&|item: &(&i32, &Person)| -> bool { item.1.surname.contains("") });
+
+                if let Some(line) = find_data {
+                    print_data.push(line);
+                }
             }
             PersonParam::MiddleName => {
-                todo!()
+                let find_data = data
+                    .find(&|item: &(&i32, &Person)| -> bool { item.1.middle_name.contains("") });
+
+                if let Some(line) = find_data {
+                    print_data.push(line);
+                }
             }
             PersonParam::DateOfBirth => {
-                todo!()
+                let find_data = data.find(&|item: &(&i32, &Person)| -> bool {
+                    let parsed_date_of_birth = item.1.date_of_birth.to_string();
+                    parsed_date_of_birth.contains("")
+                });
+
+                if let Some(line) = find_data {
+                    print_data.push(line);
+                }
             }
             PersonParam::Gender => {
-                todo!()
+                let find_data = data.find(&|item: &(&i32, &Person)| -> bool {
+                    let parsed_gender = item.1.gender.to_string();
+                    parsed_gender.contains("")
+                });
+
+                if let Some(line) = find_data {
+                    print_data.push(line);
+                }
             }
         }
+        return "good".to_string();
     }
 }
