@@ -1,16 +1,17 @@
 use crate::storage::{Person, PersonStorage};
-use crate::ui::UI;
+use crate::ui::{PersonParam, UI};
 use chrono::NaiveDate;
 
 use rand::Rng;
+use std::str::FromStr;
 use std::{io, vec};
 
 pub struct TUI {}
 
 impl UI for TUI {
-    fn add_info(&self, data: &PersonStorage) -> String {
+    fn add_info(&self, data: &mut PersonStorage) -> String {
         //Пользователь получает сгенерированный id.
-        let random_num: i32 = rand::thread_rng().gen_range(1, 10000);
+        let random_num: i32 = rand::thread_rng().gen_range(1, 1000000);
         let new_id = random_num;
 
         //Создаем вектор, в который будут записываться новые данные.
@@ -109,11 +110,73 @@ impl UI for TUI {
         return "good".to_string();
     }
 
-    fn delet_param(&self, _data: &PersonStorage, _param: crate::ui::DeleteParam) -> String {
+    fn delet_param(&self, data: &mut PersonStorage) -> String {
+        //Опрашиваем пользователя какое поле следуент удалить.
+        let mut del_param: String = String::new();
+        println!("Введите называние поля c большой буквы, которое вы хотите удалить: ");
+        io::stdin()
+            .read_line(&mut del_param)
+            .expect("Can't read del param.");
+
+        let param = PersonParam::from_str(&del_param).unwrap();
+        match param {
+            PersonParam::Name => {
+                let _ = data.delete(&|_id: &i32, person: &mut Person| -> bool {
+                    person.name.contains("name")
+                });
+            }
+            PersonParam::Surname => {
+                let _ = data.delete(&|_id: &i32, person: &mut Person| -> bool {
+                    person.surname.contains("surname")
+                });
+            }
+            PersonParam::MiddleName => {
+                let _ = data.delete(&|_id: &i32, person: &mut Person| -> bool {
+                    person.middle_name.contains("middle_name")
+                });
+            }
+            PersonParam::DateOfBirth => {
+                let _ = data.delete(&|_id: &i32, person: &mut Person| -> bool {
+                    let parsed_date = person.date_of_birth.to_string();
+                    parsed_date.contains("date of birth")
+                });
+            }
+            PersonParam::Gender => {
+                let _ = data.delete(&|_id: &i32, person: &mut Person| -> bool {
+                    let parsed_gender = person.gender.to_string();
+                    parsed_gender.contains("gender")
+                });
+            }
+        }
         todo!()
     }
 
-    fn find_param(&self, _data: &PersonStorage, _param: crate::ui::FindParam) -> String {
-        todo!()
+    fn find_param(&self, _data: &PersonStorage) -> String {
+        //Опрашиваем пользователя какое поле следуент найти.
+        let mut find_param: String = String::new();
+        println!("Введите называние поля, которое вы хотите удалить: ");
+        io::stdin()
+            .read_line(&mut find_param)
+            .expect("Can't read del param.");
+
+        let param = PersonParam::from_str(&find_param).unwrap();
+
+        match param {
+            PersonParam::Name => {
+                todo!()
+            }
+            PersonParam::Surname => {
+                todo!()
+            }
+            PersonParam::MiddleName => {
+                todo!()
+            }
+            PersonParam::DateOfBirth => {
+                todo!()
+            }
+            PersonParam::Gender => {
+                todo!()
+            }
+        }
     }
 }
