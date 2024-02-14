@@ -1,25 +1,25 @@
-information:
-  - id: "1"
+persons:
+  - id: 1
     name: Maksim
     surname: Ivanov
     middle_name: Petrovich
-    date_of_birth: 01/01/2001
-    gender: Male
-  - id: "2"
+    date_of_birth: 01-01-2001
+    gender: true
+  - id: 2
     name: Maria
     surname: Yakovleva
     middle_name: Olegovna
-    date_of_birth: 21/06/2001
-    gender: Female
-  - id: "3"
+    date_of_birth: 21-06-2001
+    gender: false
+  - id: 3
     name: Mikhail
     surname: Perevyazko
     middle_name: Sergeevich
-    date_of_birth: 28/06/2001
-    gender: Male
-  - id: "4"
+    date_of_birth: 28-06-2001
+    gender: true
+  - id: 4
     name: Elena
     surname: Golovina
     middle_name: Dmitrievna
-    date_of_birth: 29/03/1998
-    gender: Female
+    date_of_birth: 29-03-1998
+    gender: false

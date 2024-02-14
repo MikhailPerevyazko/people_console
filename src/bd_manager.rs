@@ -4,7 +4,7 @@ use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 
 use crate::storage::{Person, PersonStorage};
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SerdePerson {
     id: i32,
     name: String,
@@ -33,7 +33,7 @@ impl SerdePerson {
         }
     }
 }
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SerdePersons {
     persons: Vec<SerdePerson>,
 }
