@@ -1,9 +1,8 @@
+use crate::bd_manager::{BDOperation, SerdePersons};
 use std::path::PathBuf;
 
-use crate::bd_manager::{BDOperation, SerdePersons};
-
-struct YamlBD {
-    file_path: PathBuf,
+pub struct YamlBD {
+    pub file_path: PathBuf,
 }
 
 impl BDOperation for YamlBD {

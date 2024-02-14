@@ -1,8 +1,8 @@
-use std::collections::HashMap;
+use crate::bd_manager::{SerdePerson, SerdePersons};
 
 use chrono::NaiveDate;
+use std::collections::HashMap;
 
-use crate::bd_manager::{SerdePerson, SerdePersons};
 #[derive(Clone, Debug)]
 pub struct Person {
     pub name: String,
