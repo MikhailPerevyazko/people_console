@@ -11,7 +11,7 @@ pub struct Person {
     pub date_of_birth: NaiveDate,
     pub gender: bool,
 }
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct PersonStorage {
     persons: HashMap<i32, Person>,
 }

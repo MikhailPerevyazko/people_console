@@ -1,6 +1,6 @@
-use crate::bd_manager::{BDOperation, SerdePersons};;
+use crate::bd_manager::{BDOperation, SerdePersons};
+use clap::{error, Error, Parser};
 use std::path::PathBuf;
-use clap::Parser;
 
 pub struct YamlBD {
     pub file_path: PathBuf,
@@ -22,20 +22,18 @@ impl BDOperation for YamlBD {
     }
 }
 
-//
-pub fn get_path()->PathBuf {
+pub fn get_path() -> Result<PathBuf, Box<Error>> {
     let args = Args::parse();
     let path: String = std::env::var("config.yaml").unwrap();
     match args.file_path {
         Some(path) => path,
-        None => PathBuf::from(path)
+        None => Err("Укажите файл."),
     }
 }
-
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
     #[arg(short, long)]
-    file_path: Option<PathBuf>, 
+    file_path: Option<PathBuf>,
 }

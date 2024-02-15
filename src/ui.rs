@@ -11,7 +11,7 @@ pub trait UI {
     fn find_param(&self, data: &PersonStorage) -> String;
 }
 
-//Создаем enum параметров для функции find и delet
+//* Создаем enum параметров для функции find и delet.
 #[derive(Debug, Clone)]
 pub enum PersonParam {
     Name,
