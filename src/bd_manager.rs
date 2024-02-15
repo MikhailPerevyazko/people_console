@@ -43,6 +43,13 @@ impl SerdePersons {
         Self { persons }
     }
 }
+impl Default for SerdePersons {
+    fn default() -> Self {
+        Self {
+            persons: Vec::new(),
+        }
+    }
+}
 impl TryInto<Person> for SerdePerson {
     type Error = Box<dyn Error>;
     fn try_into(self) -> Result<Person, Self::Error> {

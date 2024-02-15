@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use crate::storage::PersonStorage;
 
-//Определяем методы для пользовательского интерфейса.
+//* Определяем методы для пользовательского интерфейса.
 pub trait UI {
     fn add_info(&self, data: &mut PersonStorage) -> String;
     fn show_info(&self, data: &PersonStorage) -> String;
