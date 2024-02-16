@@ -11,7 +11,7 @@ pub struct TUI {}
 impl UI for TUI {
     fn add_info(&self, data: &mut PersonStorage) -> String {
         //* Пользователь получает сгенерированный id.
-        let random_num: i32 = rand::thread_rng().gen_range(1, 1000000);
+        let random_num: i32 = rand::thread_rng().gen_range(1000000, 9999999);
         let new_id = random_num;
 
         //* Создаем вектор, в который будут записываться новые данные.
@@ -48,7 +48,7 @@ impl UI for TUI {
         }
 
         //* Пользователь вводит новый date of birth.
-        println!("Введите новый date of birth в формате 'yyyy-mm-dd': ");
+        println!("Введите новый date of birth в формате 'dd-mm-yyyy': ");
         let mut string_date: String = String::new();
         io::stdin()
             .read_line(&mut string_date)
@@ -58,7 +58,7 @@ impl UI for TUI {
         string_date.truncate(new_date - 1);
         let new_date_str: &str = &string_date.as_str();
 
-        let parsed_date = NaiveDate::parse_from_str(&new_date_str, "%Y-%m-%d").unwrap();
+        let parsed_date = NaiveDate::parse_from_str(&new_date_str, "%d-%m-%Y").unwrap();
 
         //* Пользователь вводит новый gender.
         let mut new_gender_string: String = String::new();
@@ -87,26 +87,35 @@ impl UI for TUI {
             date_of_birth: parsed_date,
             gender: new_gender,
         };
-
+        println!("{:?}", new_person);
         data.add(new_id, new_person);
+        println!("Информация о новой персоне успешно добавлена!");
         return "good".to_string();
     }
 
     fn show_info(&self, data: &PersonStorage) -> String {
-        println!("Вывести информацию по id?");
+        println!("Введите искомый id:");
         let mut id: Vec<i32> = vec![];
         let mut find_id: String = String::new();
         io::stdin().read_line(&mut find_id).expect("Can't read id.");
         for i in find_id.lines() {
             id.push(i.parse::<i32>().unwrap_or_default());
         }
-        data.get(Some(id));
+        let info_from_id = data.get(Some(id));
+        match info_from_id {
+            Some(info_from_id) => println!("{:#?}", info_from_id),
+            None => println!("error"),
+        }
         return "good".to_string();
     }
 
     fn show_all_info(&self, data: &PersonStorage) -> String {
-        println!("Вывести всю информацию?");
-        data.get(None);
+        println!("{:?}", data);
+        let info = data.get(None);
+        match info {
+            Some(info) => println!("{:#?}", info),
+            None => println!("error"),
+        }
         return "good".to_string();
     }
 

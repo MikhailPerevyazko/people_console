@@ -57,7 +57,7 @@ impl TryInto<Person> for SerdePerson {
             self.name.to_owned(),
             self.surname.to_owned(),
             self.middle_name.to_owned(),
-            self.date_of_birth.to_owned().parse::<NaiveDate>()?,
+            NaiveDate::parse_from_str(&self.date_of_birth, "%Y-%m-%d").unwrap(),
             self.gender.to_owned(),
         );
         Ok(person)
@@ -69,6 +69,7 @@ impl Into<PersonStorage> for SerdePersons {
         let result: HashMap<i32, Person> =
             self.persons.iter().fold(HashMap::new(), |mut res, item| {
                 if let Ok(person) = item.to_owned().try_into() {
+                    println!("add record");
                     let _ = res.insert(item.id, person);
                 }
                 res
