@@ -69,7 +69,7 @@ impl PersonStorage {
     pub fn add(&mut self, id: i32, person: Person) {
         let ret = self.persons.insert(id, person);
         println!("{:?}", ret);
-        println!("{:?}", self);
+        // println!("{:?}", self);
     }
 
     pub fn get(&self, id: Option<Vec<i32>>) -> Option<Vec<(i32, Person)>> {

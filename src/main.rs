@@ -9,7 +9,6 @@ use ui::UI;
 
 use crate::bd_manager::{BDOperation, SerdePersons};
 use crate::cmd_manager::TUI;
-use crate::storage::Person;
 use crate::yaml_bd::YamlBD;
 use std::{io, path::PathBuf};
 
@@ -25,7 +24,7 @@ fn main() {
             SerdePersons::default().into()
         }
     };
-    println!("{:?}", file_data);
+    println!("{:#?}", file_data);
     let tui = TUI {};
     //*Вывести всю инофрмацию?
     println!("Вывести всю информацию? Yes/No? ");
