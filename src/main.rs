@@ -4,16 +4,16 @@ mod storage;
 mod ui;
 mod yaml_bd;
 
-use storage::PersonStorage;
-use ui::UI;
-
 use crate::bd_manager::{BDOperation, SerdePersons};
 use crate::cmd_manager::TUI;
 use crate::yaml_bd::YamlBD;
+
 use std::{io, path::PathBuf};
+use storage::PersonStorage;
+use ui::UI;
 
 fn main() {
-    //* Подключение к файлу с инфомрацией.
+    //* Подключение к файлу с информацией */
     let path: PathBuf = PathBuf::from("/home/Mikhail/projects/People/person_console/config.yaml");
     let connecting_to_file = YamlBD { file_path: path };
     let get_data_file = connecting_to_file.load();
@@ -25,14 +25,15 @@ fn main() {
         }
     };
 
-    let tui = TUI {};
-
+    //* Создаем меню для команд в терминале */
     println!("Что вы хотите сделать?\n1 - Вывести всю информацию\n2 - Найти персону по ID,\n3 - Добавить новую персону\nВаш ответ:");
     let mut answer_line: String = String::new();
     io::stdin()
         .read_line(&mut answer_line)
         .expect("Can't read answer");
     let answer: String = answer_line.trim_end().to_string();
+
+    let tui = TUI {};
 
     if answer == "1".to_string() {
         tui.show_all_info(&file_data);
