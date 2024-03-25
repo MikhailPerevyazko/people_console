@@ -9,7 +9,6 @@ impl BDOperation for YamlBD {
     fn load(&self) -> Result<crate::bd_manager::SerdePersons, Box<dyn std::error::Error>> {
         let handler = std::fs::File::open(&self.file_path)?;
         let data: SerdePersons = serde_yaml::from_reader(&handler)?;
-        println!("{:?}", data);
         Ok(data)
     }
     fn save(

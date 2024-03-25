@@ -66,10 +66,9 @@ impl Into<SerdePersons> for PersonStorage {
 }
 
 impl PersonStorage {
-    pub fn add(&mut self, id: i32, person: Person) {
+    pub fn add(&mut self, id: i32, person: Person) -> Option<Person> {
         let ret = self.persons.insert(id, person);
-        println!("{:?}", ret);
-        // println!("{:?}", self);
+        ret
     }
 
     pub fn get(&self, id: Option<Vec<i32>>) -> Option<Vec<(i32, Person)>> {
@@ -125,5 +124,15 @@ impl Into<Vec<(i32, Person)>> for PersonStorage {
             .map(|(id, persons)| (id.to_owned(), persons.to_owned()))
             .collect::<Vec<(i32, Person)>>();
         result
+    }
+}
+
+impl Into<PersonStorage> for Vec<(i32, Person)> {
+    fn into(self) -> PersonStorage {
+        let data = self.iter().fold(HashMap::new(), |mut res, (id, person)| {
+            let _ = res.insert(id.to_owned(), person.to_owned());
+            res
+        });
+        PersonStorage { persons: data }
     }
 }

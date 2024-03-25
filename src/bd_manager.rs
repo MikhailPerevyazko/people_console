@@ -1,9 +1,9 @@
 use std::{collections::HashMap, error::Error};
 
+use crate::storage::{Person, PersonStorage};
+
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
-
-use crate::storage::{Person, PersonStorage};
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SerdePerson {
     id: i32,
@@ -35,7 +35,7 @@ impl SerdePerson {
 }
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SerdePersons {
-    persons: Vec<SerdePerson>,
+    pub persons: Vec<SerdePerson>,
 }
 
 impl SerdePersons {
@@ -69,7 +69,6 @@ impl Into<PersonStorage> for SerdePersons {
         let result: HashMap<i32, Person> =
             self.persons.iter().fold(HashMap::new(), |mut res, item| {
                 if let Ok(person) = item.to_owned().try_into() {
-                    println!("add record");
                     let _ = res.insert(item.id, person);
                 }
                 res

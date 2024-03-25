@@ -24,24 +24,23 @@ fn main() {
             SerdePersons::default().into()
         }
     };
-    println!("{:#?}", file_data);
+
     let tui = TUI {};
     //*Вывести всю инофрмацию?
-    println!("Вывести всю информацию? Yes/No? ");
-    let mut input_line: String = String::new();
-    io::stdin()
-        .read_line(&mut input_line)
-        .expect("Can't read answer");
-    let answer: String = input_line.trim_end().to_string();
+    // println!("Вывести всю информацию? Yes/No? ");
+    // let mut input_line: String = String::new();
+    // io::stdin()
+    //     .read_line(&mut input_line)
+    //     .expect("Can't read answer");
+    // let answer: String = input_line.trim_end().to_string();
 
-    if answer == "Yes".to_string() || answer == "yes".to_string() {
-        println!("{:?}", file_data);
-        tui.show_all_info(&file_data);
-    } else if answer == "No".to_string() || answer == "no".to_string() {
-        println!("Goodbye!")
-    } else {
-        println!("Wrong answer!")
-    }
+    // if answer == "Yes".to_string() || answer == "yes".to_string() {
+    //     tui.show_all_info(&file_data);
+    // } else if answer == "No".to_string() || answer == "no".to_string() {
+    //     println!("Goodbye!")
+    // } else {
+    //     println!("Wrong answer!")
+    // }
 
     //*Вывести информацию по id?
     println!("Найти по id? Yes/No:");
@@ -54,7 +53,7 @@ fn main() {
     if answer == "Yes".to_string() || answer == "yes".to_string() {
         tui.show_info(&file_data);
     } else if answer == "No".to_string() || answer == "no".to_string() {
-        println!("Goodbye!")
+        println!("Ok!")
     } else {
         println!("Wrong answer!")
     }
@@ -69,9 +68,9 @@ fn main() {
 
     if answer == "Yes".to_string() || answer == "yes".to_string() {
         let new_info = tui.add_info(&mut file_data);
-        println!("{:?}", file_data);
         let data: SerdePersons = file_data.into();
         connecting_to_file.save(&data).unwrap();
+        println!("{:#?}", new_info);
     } else if answer == "No".to_string() || answer == "no".to_string() {
         println!("Goodbye!")
     } else {

@@ -1,3 +1,4 @@
+use crate::bd_manager::SerdePersons;
 use crate::storage::{Person, PersonStorage};
 use crate::ui::{PersonParam, UI};
 use chrono::NaiveDate;
@@ -87,10 +88,9 @@ impl UI for TUI {
             date_of_birth: parsed_date,
             gender: new_gender,
         };
-        // *println!("{:#?}", new_person);
+
         data.add(new_id, new_person);
-        println!("Информация о новой персоне успешно добавлена!");
-        return "good".to_string();
+        return "Информация о новой персоне успешно добавлена!".to_string();
     }
 
     fn show_info(&self, data: &PersonStorage) -> String {
@@ -103,14 +103,17 @@ impl UI for TUI {
         }
         let info_from_id = data.get(Some(id));
         match info_from_id {
-            Some(info_from_id) => println!("{:#?}", info_from_id),
-            None => println!("error"),
+            None => return "This ID doesn't exisxts".to_string(),
+            Some(info_from_id) => {
+                let person_storage_info_from_id: PersonStorage = info_from_id.into();
+                let serde_persons_info_from_id: SerdePersons = person_storage_info_from_id.into();
+                println!("{:#?}", serde_persons_info_from_id.persons);
+                return "good".to_string();
+            }
         }
-        return "good".to_string();
     }
 
     fn show_all_info(&self, data: &PersonStorage) -> String {
-        println!("{:?}", data);
         let info = data.get(None);
         match info {
             Some(info) => println!("{:#?}", info),
