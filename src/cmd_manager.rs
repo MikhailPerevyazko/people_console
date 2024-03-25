@@ -68,8 +68,6 @@ impl UI for TUI {
             .read_line(&mut new_gender_string)
             .expect("Can't read gender");
 
-        println!("new_gender_string: {}", new_gender_string);
-
         let mut new_gender: bool = true;
         for line in new_gender_string.lines() {
             if line == "male" {

@@ -26,54 +26,24 @@ fn main() {
     };
 
     let tui = TUI {};
-    //*Вывести всю инофрмацию?
-    // println!("Вывести всю информацию? Yes/No? ");
-    // let mut input_line: String = String::new();
-    // io::stdin()
-    //     .read_line(&mut input_line)
-    //     .expect("Can't read answer");
-    // let answer: String = input_line.trim_end().to_string();
 
-    // if answer == "Yes".to_string() || answer == "yes".to_string() {
-    //     tui.show_all_info(&file_data);
-    // } else if answer == "No".to_string() || answer == "no".to_string() {
-    //     println!("Goodbye!")
-    // } else {
-    //     println!("Wrong answer!")
-    // }
-
-    //*Вывести информацию по id?
-    println!("Найти по id? Yes/No:");
-    let mut input_line: String = String::new();
+    println!("Что вы хотите сделать?\n1 - Вывести всю информацию\n2 - Найти персону по ID,\n3 - Добавить новую персону\nВаш ответ:");
+    let mut answer_line: String = String::new();
     io::stdin()
-        .read_line(&mut input_line)
+        .read_line(&mut answer_line)
         .expect("Can't read answer");
-    let answer: String = input_line.trim_end().to_string();
+    let answer: String = answer_line.trim_end().to_string();
 
-    if answer == "Yes".to_string() || answer == "yes".to_string() {
+    if answer == "1".to_string() {
+        tui.show_all_info(&file_data);
+    } else if answer == "2".to_string() {
         tui.show_info(&file_data);
-    } else if answer == "No".to_string() || answer == "no".to_string() {
-        println!("Ok!")
-    } else {
-        println!("Wrong answer!")
-    }
-
-    //*Добавить информацию о персоне.
-    println!("Добавить информацию? Yes/No:");
-    let mut input_line: String = String::new();
-    io::stdin()
-        .read_line(&mut input_line)
-        .expect("Can't read answer");
-    let answer: String = input_line.trim_end().to_string();
-
-    if answer == "Yes".to_string() || answer == "yes".to_string() {
+    } else if answer == "3".to_string() {
         let new_info = tui.add_info(&mut file_data);
         let data: SerdePersons = file_data.into();
         connecting_to_file.save(&data).unwrap();
         println!("{:#?}", new_info);
-    } else if answer == "No".to_string() || answer == "no".to_string() {
-        println!("Goodbye!")
     } else {
-        println!("Wrong answer!")
+        println!("Вы выбрали неправильную команду!")
     }
 }
