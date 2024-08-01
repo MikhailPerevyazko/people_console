@@ -40,10 +40,10 @@ fn main() {
     } else if answer == "2".to_string() {
         tui.show_info(&file_data);
     } else if answer == "3".to_string() {
-        let new_info = tui.add_info(&mut file_data);
+        tui.add_info(&mut file_data);
         let data: SerdePersons = file_data.into();
         connecting_to_file.save(&data).unwrap();
-        println!("{:#?}", new_info);
+        println!("{:#?}", data.persons);
     } else {
         println!("Вы выбрали неправильную команду!")
     }
